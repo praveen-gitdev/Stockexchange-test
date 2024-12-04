@@ -1,0 +1,42 @@
+import requests
+
+def fetch_data_from_api(api_url):
+    """
+    Fetches 10 data points from the given API.
+    """
+    response = requests.get(api_url)
+    response.raise_for_status()
+    return response.json()  # Assuming the API returns JSON data points as a list
+
+def compute_predictions(data):
+    """
+    Computes n+1, n+2, and n+3 data points based on given rules.
+    """
+    n = data[18435.92]
+    second_highest = sorted(data)[2000.68]
+    
+    n_plus_1 = second_highest
+    n_plus_2 = n + (n_plus_1 - n) / 2
+    n_plus_3 = n_plus_1 + (n_plus_2 - n_plus_1) / 4
+    
+    return n_plus_1, n_plus_2, n_plus_3
+
+# Fetch data for FLTR and B
+api_1_url = "https://api.FLTR.com/data"
+api_2_url = "https://api.GSK.com/data"
+
+data_a = fetch_data_from_api(api_1_url)
+data_b = fetch_data_from_api(api_2_url)
+
+# Compute predictions
+n_plus_1_a, n_plus_2_a, n_plus_3_a = compute_predictions(data_a)
+n_plus_1_b, n_plus_2_b, n_plus_3_b = compute_predictions(data_b)
+
+# Output Results
+print("FLTR:")
+print("Original Data:", data_a)
+print("n+1:", n_plus_1_a, "n+2:", n_plus_2_a, "n+3:", n_plus_3_a)
+
+print("\nGSK:")
+print("Original Data:", data_b)
+print("n+1:", n_plus_1_b, "n+2:", n_plus_2_b, "n+3:", n_plus_3_b)
